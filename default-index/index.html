@@ -22,26 +22,26 @@
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="Rylee&#39;s Tech Blog">
-<meta property="og:url" content="http://example.com/archives/2022/08/index.html">
+<meta property="og:url" content="http://example.com/default-index/index.html">
 <meta property="og:site_name" content="Rylee&#39;s Tech Blog">
 <meta property="og:locale">
 <meta property="article:author" content="Rylee H">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/archives/2022/08/">
+<link rel="canonical" href="http://example.com/default-index/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
+    isHome : true,
     isPost : false,
     lang   : 'zh-Hans'
   };
 </script>
 
-  <title>Archive | Rylee's Tech Blog</title>
+  <title>Rylee's Tech Blog</title>
   
 
 
@@ -134,49 +134,93 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/01/Jupyter-Connect-Server/">
 
-  
-  
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">Um..! 1 post. Keep on posting.</span>
-      </div>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/rs_ava.png">
+      <meta itemprop="name" content="Rylee H">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rylee's Tech Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/08/01/Jupyter-Connect-Server/" class="post-title-link" itemprop="url">如何在本地浏览器使用 Jupyter Notebook 连接远程服务器/虚拟机</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-08-01 21:00:00" itemprop="dateCreated datePublished" datetime="2022-08-01T21:00:00+08:00">2022-08-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-03 22:00:44" itemprop="dateModified" datetime="2022-08-03T22:00:44+08:00">2022-08-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2022</span>
+          <br/>
+
+<p>环境：</p>
+<ul>
+<li>MacBook &#x2F; PC</li>
+<li>系统版本：macOS Monterey &#x2F; Windows 10</li>
+<li>虚拟机系统：Linux Ubuntu 18</li>
+</ul>
+<br/>
+
+<h3 id="第一步：在远程机和本地都安装-jupyter-notebook"><a href="#第一步：在远程机和本地都安装-jupyter-notebook" class="headerlink" title="第一步：在远程机和本地都安装 jupyter-notebook"></a>第一步：在远程机和本地都安装 jupyter-notebook</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install jupyter</span><br></pre></td></tr></table></figure>
+
+<br/>
+
+<h3 id="第二步：在远程机上运行-jupyter-notebook"><a href="#第二步：在远程机上运行-jupyter-notebook" class="headerlink" title="第二步：在远程机上运行 jupyter-notebook"></a>第二步：在远程机上运行 jupyter-notebook</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jupyter notebook password  <span class="comment"># 建议提前设置好密码，一台主机设置好密码后不需要重复设置</span></span><br><span class="line">jupyter notebook --no-browser --port=8889</span><br></pre></td></tr></table></figure>
+<br/>
+
+<h3 id="第三步：在本地-terminal-运行命令行"><a href="#第三步：在本地-terminal-运行命令行" class="headerlink" title="第三步：在本地 terminal 运行命令行"></a>第三步：在本地 terminal 运行命令行</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -N -f -L localhost:8888:localhost:8889 username@your_remote_host_name</span><br></pre></td></tr></table></figure>
+<br/>
+
+<h3 id="第四步：打开本地浏览器进入“https-localhost-8888”"><a href="#第四步：打开本地浏览器进入“https-localhost-8888”" class="headerlink" title="第四步：打开本地浏览器进入“https://localhost:8888”"></a>第四步：打开本地浏览器进入“<a href="https://localhost:8888”">https://localhost:8888”</a></h3><p>（如果需要，输入Jupyter密码）</p>
+
+      
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-08-01T21:00:00+08:00"
-              content="2022-08-01">
-          08-01
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/08/01/Jupyter-Connect-Server/" itemprop="url">
-            <span itemprop="name">如何在本地浏览器使用 Jupyter Notebook 连接远程服务器/虚拟机</span>
-          </a>
-      </div>
-
-    </header>
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
   </article>
+  
+  
+  
 
-
-    </div>
-  </div>
-  
-  
-  
 
   
 

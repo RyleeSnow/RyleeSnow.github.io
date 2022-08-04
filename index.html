@@ -180,7 +180,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-08-04 17:49:15 / Modified: 17:49:52" itemprop="dateCreated datePublished" datetime="2022-08-04T17:49:15+08:00">2022-08-04</time>
+              <time title="Created: 2022-08-04 17:49:15 / Modified: 17:52:21" itemprop="dateCreated datePublished" datetime="2022-08-04T17:49:15+08:00">2022-08-04</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -203,50 +203,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>环境：Linux Ubuntu 18</p>
-<p>应对情况：在项目合作过程，从合作团队收到他们已经封装好的镜像，其中包含 <code>environment.py</code> &#x2F; <code>docker-compose.yml</code> &#x2F; <code>Dockefile</code> 等文件，因此本文主要聚焦 Docker 镜像使用，不包含 Docker 镜像制作等内容。</p>
-<br />
-
-<h2 id="1-Docker-安装"><a href="#1-Docker-安装" class="headerlink" title="1. Docker 安装"></a>1. Docker 安装</h2><h3 id="1-检查虚拟机上是否预装好-Docker"><a href="#1-检查虚拟机上是否预装好-Docker" class="headerlink" title="(1) 检查虚拟机上是否预装好 Docker"></a>(1) 检查虚拟机上是否预装好 Docker</h3><p>很多租赁或者购买的云虚拟机上都已经提前装好了 Docker，所以可以使用下面的命令行先看下 Docker 的安装情况：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo service docker start </span><br><span class="line">$ docker run hello-world</span><br></pre></td></tr></table></figure>
-
-<p>如果 Docker 可以正常工作，输入完命令后会出现 <em>“Hello from Docker! This message shows that your installation appears to be working correctly.”</em></p>
-<br />
-
-<h3 id="2-安装-Docker"><a href="#2-安装-Docker" class="headerlink" title="(2) 安装 Docker"></a>(2) 安装 Docker</h3><p>主要参考了官方文档: <a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/ubuntu/">https://docs.docker.com/engine/install/ubuntu/</a></p>
-<h4 id="2-1-移除之前的版本"><a href="#2-1-移除之前的版本" class="headerlink" title="(2.1) 移除之前的版本"></a>(2.1) 移除之前的版本</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get remove docker docker-engine docker.io containerd runc</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-2-设置-repository"><a href="#2-2-设置-repository" class="headerlink" title="(2.2) 设置 repository"></a>(2.2) 设置 repository</h4><p>逐一输入以下的命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update</span><br><span class="line"></span><br><span class="line">$ sudo apt-get install \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    gnupg \</span><br><span class="line">    lsb-release</span><br><span class="line">  </span><br><span class="line">$ sudo <span class="built_in">mkdir</span> -p /etc/apt/keyrings</span><br><span class="line">$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg</span><br><span class="line"></span><br><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin</span><br><span class="line"> </span><br><span class="line">$ <span class="built_in">echo</span> \</span><br><span class="line">  <span class="string">&quot;deb [arch=<span class="subst">$(dpkg --print-architecture)</span> signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \</span></span><br><span class="line"><span class="string">  <span class="subst">$(lsb_release -cs)</span> stable&quot;</span> | sudo <span class="built_in">tee</span> /etc/apt/sources.list.d/docker.list &gt; /dev/null</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>基本上到这里 Docker 就已经安装成功，可以使用第一步中的命令，再次进行检查。有些时候，可能需要安装某个特殊版本的 Docker（例如我之前曾遇到过预安装的 docker-engine 和 docker-compose 版本不对应的情况），那么可以参考下方的命令。</p>
-<h4 id="2-3-安装指定版本的-docker-composer"><a href="#2-3-安装指定版本的-docker-composer" class="headerlink" title="(2.3) 安装指定版本的 docker-composer"></a>(2.3) 安装指定版本的 docker-composer</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ curl -L https://github.com/docker/compose/releases/download/1.26.0/docker-compose-`<span class="built_in">uname</span> -s`-`<span class="built_in">uname</span> -m` -o /usr/local/bin/docker-compose</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">chmod</span> +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
-
-<br />
-
-<h2 id="2-安装镜像"><a href="#2-安装镜像" class="headerlink" title="2. 安装镜像"></a>2. 安装镜像</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下面这个命令是基于我本地文件进行镜像安装。</span></span><br><span class="line"><span class="comment"># 注意：具体的 args 使用及参数选择需要具体针对你自己的 envrionment.py 中的定义</span></span><br><span class="line"></span><br><span class="line">$ python environment.py -port 22 -action build</span><br><span class="line"></span><br><span class="line"><span class="comment"># 还有一种是直接从网上获取镜像，这边不展开，只是举个例子</span></span><br><span class="line"></span><br><span class="line">$ docker pull ubuntu</span><br></pre></td></tr></table></figure>
-
-<p>输入上方命令后，需要一些时间搭建镜像。完成后，你可以使用下面命令查看镜像是否安装成功。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker images <span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
-<p> 如果镜像搭建成功，你将可以看到你的<code>镜像名称（image_name）</code>，<code>镜像ID（image_ID）</code>。这在后面将会用到。</p>
-<p>另外，如果在搭建过程中出现任何错误，你可以通过以下命令删除你的镜像。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker rmi &lt;image_ID or image_name&gt;</span><br><span class="line">$ docker rmi $(docker images -q)  <span class="comment"># 一次删除所有镜像，慎用</span></span><br></pre></td></tr></table></figure>
-
-<br />
-
-<h2 id="3-创建和使用容器（container）"><a href="#3-创建和使用容器（container）" class="headerlink" title="3. 创建和使用容器（container）"></a>3. 创建和使用容器（container）</h2><p>基于某个镜像新建一个容器:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 最简单的方式：</span></span><br><span class="line">$ docker run -it &lt;image_ID&gt; /bin/bash</span><br><span class="line"><span class="comment"># 一般我们希望有个交互式 Shell，所以后面用的是 /bin/bash。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 但很多时候，我们需要虚拟机上的某个文件夹可以和container里面的文件夹同步，这样我们就不用来来回回复制文件</span></span><br><span class="line"><span class="comment"># 这时候可以使用 -v 这个命令。还可以使用多个 -v，从而映射多个文件夹</span></span><br><span class="line">$ docker run -it -v &lt;host-folder&gt;:&lt;container-folder&gt; &lt;image_ID&gt; /bin/bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我曾遇到过 container 中的 GPU 启动不了的情况，这边有个解决办法是：</span></span><br><span class="line">$ docker run -it -v &lt;host-folder&gt;:&lt;container-folder&gt; --gpus all &lt;image_ID&gt; /bin/bash</span><br></pre></td></tr></table></figure>
-
-<p>正常创建后，你会看到类似于 <em>“root@<container_ID>“</em> 的内容。这边的<code>container_ID</code>是自动生成的，后面会遇到。</p>
-<p>如果你需要用到 conda 环境和 conda 命令，那你还需要依次进行以下的命令。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在容器内部：</span></span><br><span class="line">$ conda init bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在容器内部：</span></span><br><span class="line">$ <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时退回到了 host，需要重新进入容器</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 注意有两种常见方法进入容器：</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># (1）再次退出后会自动停止容器</span></span><br><span class="line">$ docker start &lt;container_ID&gt;</span><br><span class="line">$ docker attach &lt;container_ID&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># (2) 再次退出后会不会停止容器</span></span><br><span class="line">$ docker <span class="built_in">exec</span> -it &lt;container_ID&gt; /bin/bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 再次进入容器后就可以使用 conda 命令了，比如激活某个环境：</span></span><br><span class="line">$ conda activate my_conda_env</span><br></pre></td></tr></table></figure>
-
-<p>另外，任何时候你想查看容器状态或者对容器进行管理，可以参考下方的命令。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ docker ps  <span class="comment"># 查看正在运行的容器</span></span><br><span class="line">$ docker ps -a  <span class="comment"># 查看所有容器</span></span><br><span class="line">$ docker stop &lt;container_ID&gt;  <span class="comment"># 停止容器</span></span><br><span class="line">$ docker restart &lt;container_ID&gt;  <span class="comment"># 重启容器</span></span><br><span class="line">$ docker <span class="built_in">rm</span> -f &lt;container_ID&gt;  <span class="comment"># 删除容器</span></span><br><span class="line">$ docker attach &lt;container_ID&gt;  <span class="comment"># 查看所有容器</span></span><br></pre></td></tr></table></figure>
-
-<br />
-
-<h2 id="4-其他一些可能会用到的命令"><a href="#4-其他一些可能会用到的命令" class="headerlink" title="4. 其他一些可能会用到的命令"></a>4. 其他一些可能会用到的命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在 host 和容器间传输文件</span></span><br><span class="line">$ docker inspect -f <span class="string">&#x27;&#123;&#123;.Id&#125;&#125;&#x27;</span> &lt;container_ID&gt;  <span class="comment"># 获取到容器的 container_long_ID</span></span><br><span class="line">$ docker <span class="built_in">cp</span> &lt;your_host_file_path&gt; &lt;container_long_ID&gt;:&lt;the_container_file_path&gt;  <span class="comment"># 文件复制</span></span><br></pre></td></tr></table></figure>
+          <p>应对情况：在项目合作过程，从合作团队收到他们已经封装好的镜像，其中包含 <code>environment.py</code> &#x2F; <code>docker-compose.yml</code> &#x2F; <code>Dockefile</code> 等文件，因此本文主要聚焦 Docker 镜像使用，不包含 Docker 镜像制作等内容。</p>
+<p>环境：Linux Ubuntu 18</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/08/04/Docker-Beginner/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

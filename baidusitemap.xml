@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://example.com/2022/08/04/Docker-Beginner/</loc>
+    <loc>https://ryleesnow.github.io/2022/08/04/Docker-Beginner/</loc>
     <lastmod>2022-08-06</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/08/01/Jupyter-Connect-Server/</loc>
+    <loc>https://ryleesnow.github.io/2022/08/01/Jupyter-Connect-Server/</loc>
     <lastmod>2022-08-06</lastmod>
   </url>
 </urlset> 

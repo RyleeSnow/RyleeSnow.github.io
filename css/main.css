@@ -202,7 +202,7 @@ h3::before {
   content: '#';
   font-size: 22px;
   font-weight: bold;
-  color: #56b26f;
+  color: #69dbdc;
   margin-right: 9px;
   margin-left: -22px;
 }
@@ -210,7 +210,7 @@ h4::before {
   content: '-';
   font-size: 20px;
   font-weight: bold;
-  color: #56b26f;
+  color: #69dbdc;
   margin-right: 9px;
 }
 h1 {
@@ -433,6 +433,7 @@ pre {
 pre,
 code {
   font-family: 'monospaced', consolas, Menlo, monospace, sans-serif;
+  border: 1px;
 }
 code {
   background: #eee;
@@ -1204,7 +1205,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff2a65;
+  background: #85032b;
   border-radius: 50%;
   content: ' ';
   display: inline-block;

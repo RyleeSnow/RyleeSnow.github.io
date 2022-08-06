@@ -28,10 +28,10 @@
 <meta property="og:description" content="环境：  MacBook &#x2F; PC 系统版本：macOS Monterey &#x2F; Windows 10 虚拟机系统：Linux Ubuntu 18">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-08-01T13:00:00.000Z">
-<meta property="article:modified_time" content="2022-08-06T06:29:48.139Z">
+<meta property="article:modified_time" content="2022-08-06T06:35:18.597Z">
 <meta property="article:author" content="Rylee H">
-<meta property="article:tag" content="linux">
 <meta property="article:tag" content="jupyter-notebook">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/2022/08/01/Jupyter-Connect-Server/">
@@ -226,14 +226,14 @@
 
 <br/>
 
-<h3 id="第一步：在远程机和本地都安装-jupyter-notebook"><a href="#第一步：在远程机和本地都安装-jupyter-notebook" class="headerlink" title="第一步：在远程机和本地都安装 jupyter-notebook"></a>第一步：在远程机和本地都安装 jupyter-notebook</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip install jupyter</span><br></pre></td></tr></table></figure>
+<h3 id="第一步：在远程机和本地都安装-jupyter-notebook"><a href="#第一步：在远程机和本地都安装-jupyter-notebook" class="headerlink" title="第一步：在远程机和本地都安装 jupyter-notebook"></a>第一步：在远程机和本地都安装 jupyter-notebook</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip install jupyter</span><br></pre></td></tr></table></figure>
 
 <br/>
 
-<h3 id="第二步：在远程机上运行-jupyter-notebook"><a href="#第二步：在远程机上运行-jupyter-notebook" class="headerlink" title="第二步：在远程机上运行 jupyter-notebook"></a>第二步：在远程机上运行 jupyter-notebook</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jupyter notebook password  # 建议提前设置好密码，一台主机设置好密码后不需要重复设置</span><br><span class="line">jupyter notebook --no-browser --port=8889</span><br></pre></td></tr></table></figure>
+<h3 id="第二步：在远程机上运行-jupyter-notebook"><a href="#第二步：在远程机上运行-jupyter-notebook" class="headerlink" title="第二步：在远程机上运行 jupyter-notebook"></a>第二步：在远程机上运行 jupyter-notebook</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter notebook password  # 建议提前设置好密码，一台主机设置好密码后不需要重复设置</span><br><span class="line">jupyter notebook --no-browser --port=8889</span><br></pre></td></tr></table></figure>
 <br/>
 
-<h3 id="第三步：在本地-terminal-运行命令行"><a href="#第三步：在本地-terminal-运行命令行" class="headerlink" title="第三步：在本地 terminal 运行命令行"></a>第三步：在本地 terminal 运行命令行</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -N -f -L localhost:8888:localhost:8889 username@your_remote_host_name</span><br></pre></td></tr></table></figure>
+<h3 id="第三步：在本地-terminal-运行命令行"><a href="#第三步：在本地-terminal-运行命令行" class="headerlink" title="第三步：在本地 terminal 运行命令行"></a>第三步：在本地 terminal 运行命令行</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh -N -f -L localhost:8888:localhost:8889 username@your_remote_host_name</span><br></pre></td></tr></table></figure>
 <br/>
 
 <h3 id="第四步：打开本地浏览器进入“https-localhost-8888”"><a href="#第四步：打开本地浏览器进入“https-localhost-8888”" class="headerlink" title="第四步：打开本地浏览器进入“https://localhost:8888”"></a>第四步：打开本地浏览器进入“<a href="https://localhost:8888”">https://localhost:8888”</a></h3><p>（如果需要，输入Jupyter密码）</p>
@@ -246,8 +246,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/linux/" rel="tag"># linux</a>
               <a href="/tags/jupyter-notebook/" rel="tag"># jupyter-notebook</a>
+              <a href="/tags/linux/" rel="tag"># linux</a>
           </div>
 
         

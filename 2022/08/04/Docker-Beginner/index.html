@@ -18,7 +18,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"ryleesnow.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","width":256,"display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"ryleesnow.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","width":256,"display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"fadeIn","header":"fadeIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="应对情况：在项目合作过程，从合作团队收到他们已经封装好的镜像，其中包含 environment_setting.py &#x2F; docker-compose.yml &#x2F; Dockefile 等文件，因此本文主要聚焦 Docker 镜像使用，不包含 Docker 镜像制作等内容。">
@@ -29,10 +29,10 @@
 <meta property="og:description" content="应对情况：在项目合作过程，从合作团队收到他们已经封装好的镜像，其中包含 environment_setting.py &#x2F; docker-compose.yml &#x2F; Dockefile 等文件，因此本文主要聚焦 Docker 镜像使用，不包含 Docker 镜像制作等内容。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-08-04T09:49:15.669Z">
-<meta property="article:modified_time" content="2022-08-06T15:18:39.822Z">
+<meta property="article:modified_time" content="2022-08-06T15:53:06.831Z">
 <meta property="article:author" content="Rylee H">
-<meta property="article:tag" content="docker">
 <meta property="article:tag" content="linux">
+<meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://ryleesnow.github.io/2022/08/04/Docker-Beginner/">
@@ -217,16 +217,16 @@
       
         <br />
 
-<p>应对情况：在项目合作过程，从合作团队收到他们已经封装好的镜像，其中包含 <strong>environment_setting.py &#x2F; docker-compose.yml &#x2F; Dockefile</strong> 等文件，因此本文主要聚焦 Docker 镜像使用，不包含 Docker 镜像制作等内容。</p>
+<p>应对情况：在项目合作过程，从合作团队收到他们已经封装好的镜像，其中包含 <em>environment_setting.py</em> &#x2F; <em>docker-compose.yml</em> &#x2F; <em>Dockefile</em> 等文件，因此本文主要聚焦 Docker 镜像使用，不包含 Docker 镜像制作等内容。</p>
 <span id="more"></span>
 
 <p>环境：Linux Ubuntu 18</p>
 <br />
 
-<h3 id="Docker-安装"><a href="#Docker-安装" class="headerlink" title="Docker 安装"></a>Docker 安装</h3><h4 id="检查虚拟机上是否预装好-Docker"><a href="#检查虚拟机上是否预装好-Docker" class="headerlink" title="检查虚拟机上是否预装好 Docker"></a>检查虚拟机上是否预装好 Docker</h4><p>很多租赁或者购买的云虚拟机上都已经提前装好了 docker engine 和 docker compose ，所以可以使用下面的命令行先看下 Docker 的安装情况和版本：</p>
+<h3 id="Docker-安装"><a href="#Docker-安装" class="headerlink" title="Docker 安装"></a>Docker 安装</h3><h4 id="检查虚拟机上是否预装好-Docker"><a href="#检查虚拟机上是否预装好-Docker" class="headerlink" title="检查虚拟机上是否预装好 Docker"></a>检查虚拟机上是否预装好 Docker</h4><p>很多租赁或者购买的云虚拟机上都已经提前装好了 <em>docker-engine</em> 和 <em>docker-compose</em> ，所以可以使用下面的命令行先看下 Docker 的安装情况和版本：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker --version  <span class="comment"># 检查当前版本</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker-compose --version  <span class="comment"># 检查 docker-compose 版本</span></span> </span><br></pre></td></tr></table></figure>
 
-<p>如果版本符合你的需求，可以直接试试运行 “Hello-World” 镜像：</p>
+<p>如果版本符合你的需求，可以直接试试运行 <em>“Hello-World”</em> 镜像：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sudo service docker start &amp;&amp; docker run hello-world</span></span><br></pre></td></tr></table></figure>
 
 <p>如果 Docker 可以正常工作，输入完命令后会出现:</p>
@@ -248,7 +248,8 @@
 
 <p>输入上方命令后，需要一些时间搭建镜像。完成后，你可以使用下面命令查看镜像是否安装成功。</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker images <span class="built_in">ls</span></span></span><br></pre></td></tr></table></figure>
-<p> 如果镜像搭建成功，你将可以看到你的<code>镜像名称（image_name）</code>，<code>镜像ID（image_ID）</code>。这在后面将会用到。</p>
+
+<p>如果镜像搭建成功，你将可以看到你的 <em>镜像名称（image_name）</em>，<em>镜像ID（image_ID）</em>。这在后面将会用到。</p>
 <p>另外，如果在搭建过程中出现任何错误，你可以通过以下命令删除你的镜像。</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker rmi &lt;image_ID or image_name&gt;  <span class="comment"># 删除某个镜像</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker rmi $(docker images -q)  <span class="comment"># 一次删除所有镜像，慎用</span></span></span><br></pre></td></tr></table></figure>
 
@@ -256,7 +257,7 @@
 
 <h3 id="创建和使用容器（container）"><a href="#创建和使用容器（container）" class="headerlink" title="创建和使用容器（container）"></a>创建和使用容器（container）</h3><h4 id="基于某个镜像新建一个容器"><a href="#基于某个镜像新建一个容器" class="headerlink" title="基于某个镜像新建一个容器:"></a>基于某个镜像新建一个容器:</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker run -it &lt;image_ID&gt; /bin/bash  <span class="comment"># 最简单的方式</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker run -it -v &lt;host-folder&gt;:&lt;container-folder&gt; &lt;image_ID&gt; /bin/bash  <span class="comment"># 虚拟机文件夹同步容器中文件夹</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker run -it --gpus all &lt;image_ID&gt; /bin/bash  <span class="comment"># container 中的 GPU 启动不了的情况</span></span></span><br></pre></td></tr></table></figure>
 
-<p>正常创建后，你会看到类似于 <strong>root@<container_ID></strong> 的内容。这边的<strong>container_ID</strong>是自动生成的，后面会遇到。</p>
+<p>正常创建后，你会看到 <em>root@container_ID</em>。这边的 <em>container_ID</em> 是自动生成的，后面会遇到。</p>
 <h4 id="如果你需要用到-conda-环境和-conda-命令："><a href="#如果你需要用到-conda-环境和-conda-命令：" class="headerlink" title="如果你需要用到 conda 环境和 conda 命令："></a>如果你需要用到 conda 环境和 conda 命令：</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">conda init bash  <span class="comment"># 在容器内部</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">exit</span>  <span class="comment"># 在容器内部</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker <span class="built_in">exec</span> -it &lt;container_ID&gt; /bin/bash  <span class="comment"># 重新进入容器</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">conda activate my_conda_env  <span class="comment"># 可使用 conda 命令</span></span></span><br></pre></td></tr></table></figure>
 
 <p>另外，任何时候你想查看容器状态或者对容器进行管理，可以参考下方的命令。</p>
@@ -265,6 +266,7 @@
 <br />
 
 <h3 id="其他一些可能会用到的命令"><a href="#其他一些可能会用到的命令" class="headerlink" title="其他一些可能会用到的命令"></a>其他一些可能会用到的命令</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker inspect -f <span class="string">&#x27;&#123;&#123;.Id&#125;&#125;&#x27;</span> &lt;container_ID&gt;  <span class="comment"># 获取到容器的 container_long_ID</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker <span class="built_in">cp</span> &lt;host_path&gt; &lt;container_long_ID&gt;:&lt;container_path&gt;  <span class="comment"># 在 host 和容器间传输文件</span></span></span><br></pre></td></tr></table></figure>
+
     </div>
 
     
@@ -273,8 +275,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/docker/" rel="tag"># docker</a>
               <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/docker/" rel="tag"># docker</a>
           </div>
 
         

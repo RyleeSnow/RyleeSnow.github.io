@@ -1205,7 +1205,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #9801e9;
+  background: #aba441;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1819,7 +1819,7 @@ pre .javascript .function {
 }
 .posts-expand .post-title {
   font-size: 1.5em;
-  font-weight: normal;
+  font-weight: bold;
   color: #2bbc8a;
   margin: initial;
   text-align: center;

@@ -3,7 +3,7 @@ https://ryleesnow.github.io/2022/08/01/Jupyter-Connect-Server/
 https://ryleesnow.github.io/tags/index.html
 https://ryleesnow.github.io/categories/index.html
 https://ryleesnow.github.io/
-https://ryleesnow.github.io/tags/docker/
-https://ryleesnow.github.io/tags/linux/
 https://ryleesnow.github.io/tags/jupyter-notebook/
+https://ryleesnow.github.io/tags/linux/
+https://ryleesnow.github.io/tags/docker/
 https://ryleesnow.github.io/categories/tools/

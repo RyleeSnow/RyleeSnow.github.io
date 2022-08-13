@@ -2,7 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://ryleesnow.github.io/2022/08/04/Docker-Beginner/</loc>
+    <loc>https://ryleesnow.github.io/2022/08/06/combine_pdf/</loc>
+    
+    <lastmod>2022-08-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryleesnow.github.io/2022/08/04/docker_beginner/</loc>
     
     <lastmod>2022-08-06</lastmod>
     
@@ -11,7 +20,7 @@
   </url>
   
   <url>
-    <loc>https://ryleesnow.github.io/2022/08/01/Jupyter-Connect-Server/</loc>
+    <loc>https://ryleesnow.github.io/2022/08/01/jupyter_connect_to_server/</loc>
     
     <lastmod>2022-08-06</lastmod>
     
@@ -40,29 +49,43 @@
 
   <url>
     <loc>https://ryleesnow.github.io/</loc>
-    <lastmod>2022-08-07</lastmod>
+    <lastmod>2022-08-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   
   <url>
-    <loc>https://ryleesnow.github.io/tags/jupyter-notebook/</loc>
-    <lastmod>2022-08-07</lastmod>
+    <loc>https://ryleesnow.github.io/tags/python/</loc>
+    <lastmod>2022-08-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ryleesnow.github.io/tags/linux/</loc>
-    <lastmod>2022-08-07</lastmod>
+    <loc>https://ryleesnow.github.io/tags/pdf/</loc>
+    <lastmod>2022-08-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://ryleesnow.github.io/tags/docker/</loc>
-    <lastmod>2022-08-07</lastmod>
+    <lastmod>2022-08-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryleesnow.github.io/tags/linux/</loc>
+    <lastmod>2022-08-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryleesnow.github.io/tags/jupyter-notebook/</loc>
+    <lastmod>2022-08-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -71,7 +94,7 @@
   
   <url>
     <loc>https://ryleesnow.github.io/categories/tools/</loc>
-    <lastmod>2022-08-07</lastmod>
+    <lastmod>2022-08-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

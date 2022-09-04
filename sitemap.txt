@@ -10,6 +10,6 @@ https://ryleesnow.github.io/tags/pdf/
 https://ryleesnow.github.io/tags/docker/
 https://ryleesnow.github.io/tags/linux/
 https://ryleesnow.github.io/tags/jupyter-notebook/
-https://ryleesnow.github.io/tags/performance/
+https://ryleesnow.github.io/tags/code-speed/
 https://ryleesnow.github.io/categories/tools/
 https://ryleesnow.github.io/categories/python/

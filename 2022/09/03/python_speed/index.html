@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/rs_ava.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/rs_ava.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/rs_ava.png">
+  <link rel="mask-icon" href="/images/rs_ava.png" color="#222">
+  <meta name="google-site-verification" content="zAi6T3-nVpb9rt2RhHuaC6TAgO7QcovA9bhHSmYbhpY">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|monospaced:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ryleesnow.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","width":256,"display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"fadeIn","header":"fadeIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="场景：需要使用一份代码进行数据处理，数据量约为几千万行。尝试运行该代码后发现处理数据很慢，因此进行代码运行速度分析和提升。 代码分析工具：line_profiler 测试数据量：10万行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python - 代码运行速度优化 - 实例">
+<meta property="og:url" content="https://ryleesnow.github.io/2022/09/03/python_speed/index.html">
+<meta property="og:site_name" content="Rylee&#39;s Tech Blog">
+<meta property="og:description" content="场景：需要使用一份代码进行数据处理，数据量约为几千万行。尝试运行该代码后发现处理数据很慢，因此进行代码运行速度分析和提升。 代码分析工具：line_profiler 测试数据量：10万行">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-09-03T14:22:22.000Z">
+<meta property="article:modified_time" content="2022-09-04T07:30:59.351Z">
+<meta property="article:author" content="Rylee H">
+<meta property="article:tag" content="performance">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://ryleesnow.github.io/2022/09/03/python_speed/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>Python - 代码运行速度优化 - 实例 | Rylee's Tech Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <h1 class="site-title">Rylee's Tech Blog</h1>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-anchor fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-hashtag fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-cat fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://ryleesnow.github.io/2022/09/03/python_speed/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/rs_ava.png">
+      <meta itemprop="name" content="Rylee H">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rylee's Tech Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python - 代码运行速度优化 - 实例
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-09-03 22:22:22" itemprop="dateCreated datePublished" datetime="2022-09-03T22:22:22+08:00">2022-09-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <br/>
+
+<ul>
+<li>场景：需要使用一份代码进行数据处理，数据量约为几千万行。尝试运行该代码后发现处理数据很慢，因此进行代码运行速度分析和提升。</li>
+<li>代码分析工具：<code>line_profiler</code></li>
+<li>测试数据量：10万行</li>
+</ul>
+<span id="more"></span>
+
+<br/>
+
+<h2 id="1-原始代码"><a href="#1-原始代码" class="headerlink" title="1. 原始代码"></a>1. 原始代码</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">method_0</span>(<span class="params">df</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> df.index:</span><br><span class="line">        price_list1 = df[<span class="string">&#x27;price_1&#x27;</span>].loc[i]</span><br><span class="line">        price_list2 = price_list1.copy()</span><br><span class="line">        <span class="keyword">for</span> price <span class="keyword">in</span> price_list1:</span><br><span class="line">            <span class="keyword">if</span> price <span class="keyword">in</span> [<span class="number">999</span>, <span class="number">9999</span>, <span class="number">99999</span>, <span class="number">999999</span>, <span class="number">9999999</span>, <span class="number">99999999</span>]:</span><br><span class="line">                price_list2.remove(price)</span><br><span class="line">        <span class="keyword">if</span> price_list2 == []:</span><br><span class="line">            price_list2 = [df[<span class="string">&#x27;price_2&#x27;</span>].loc[i]]</span><br><span class="line">        df[<span class="string">&#x27;price_1&#x27;</span>].loc[i] = price_list2</span><br></pre></td></tr></table></figure>
+<p>第一次看到代码时，我则猜测最大的瓶颈是使用了<code>loc</code>进行赋值：<code>Pandas.DataFrame.loc</code>一如既往、众所周知的慢！<br>（Pandas 的底层是通过 Cpython 和 C 实现的。 使用 for 循环时，就会不停在 Python 语言和 C 语言中进行转换。 而且，Pandas 弱在检索，强在计算；Python 强在检索，弱在计算。 使用<code>Pandas.DataFrame.loc</code>实际上就是在使用 Pandas 的弱项。）</p>
+<br/>
+
+<p>先看下原始代码运行速度：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Timer unit: 1e-06 s</span><br><span class="line"></span><br><span class="line">Total time: 110.704 s</span><br><span class="line">File: &lt;ipython-input-6-da4d503d1068&gt;</span><br><span class="line">Function: method_0 at line 1</span><br><span class="line"></span><br><span class="line">Line <span class="comment">#      Hits         Time  Per Hit   % Time  Line Contents</span></span><br><span class="line">==============================================================</span><br><span class="line">     1                                           def method_0(<span class="built_in">df</span>):</span><br><span class="line">     2    100001     182837.0      1.8      0.2      <span class="keyword">for</span> i <span class="keyword">in</span> df.index:</span><br><span class="line">     3    100000    5567047.0     55.7      5.0          price_list1 = <span class="built_in">df</span>[<span class="string">&#x27;price_1&#x27;</span>].loc[i]</span><br><span class="line">     4    100000     100540.0      1.0      0.1          price_list2 = price_list1.copy()</span><br><span class="line">     5    400000     151158.0      0.4      0.1          <span class="keyword">for</span> price <span class="keyword">in</span> price_list1:</span><br><span class="line">     6    300000     172759.0      0.6      0.2              <span class="keyword">if</span> price <span class="keyword">in</span> [999, 9999, 99999, 999999, 9999999, 99999999]:</span><br><span class="line">     7    100044      86540.0      0.9      0.1                  price_list2.remove(price)</span><br><span class="line">     8    100000      50259.0      0.5      0.0          <span class="keyword">if</span> price_list2 == []:</span><br><span class="line">     9                                                       price_list2 = [<span class="built_in">df</span>[<span class="string">&#x27;price_2&#x27;</span>].loc[i]]</span><br><span class="line">    10    100000  104392918.0   1043.9     94.3          <span class="built_in">df</span>[<span class="string">&#x27;price_1&#x27;</span>].loc[i] = price_list2</span><br></pre></td></tr></table></figure>
+<p>果然 <code>loc</code> 就是罪魁祸首！尤其是最后赋值的部分。</p>
+<br/>
+
+<h2 id="2-基本代码书写习惯"><a href="#2-基本代码书写习惯" class="headerlink" title="2. 基本代码书写习惯"></a>2. 基本代码书写习惯</h2><p>虽然已经找出关键问题，但这一次的代码优化我们先从最容易入手的<u><strong>规范基本的代码书写习惯</strong></u>开始：</p>
+<ul>
+<li><code>copy</code>的步骤整体看下来是不需要的，去掉不影响实现</li>
+<li>列表<code>remove</code>这一步也可以简单地用列表生成式替换</li>
+<li>空列表的判断也可以更加简洁</li>
+</ul>
+<p>新的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">method_1</span>(<span class="params">df</span>):</span><br><span class="line">    remove_list = [<span class="number">999</span>, <span class="number">9999</span>, <span class="number">99999</span>, <span class="number">999999</span>, <span class="number">9999999</span>, <span class="number">99999999</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> df.index:</span><br><span class="line">        price_list = df[<span class="string">&#x27;price_1&#x27;</span>].loc[i]</span><br><span class="line">        price_list_ = [x <span class="keyword">for</span> x <span class="keyword">in</span> price_list <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> remove_list]</span><br><span class="line">        <span class="comment"># 还有一种写法是 price_list_ = list(set(price_list) - set(remove_list))</span></span><br><span class="line">        <span class="comment"># 测试下来速度差不多，这里就不赘述了</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> price_list_:</span><br><span class="line">            price_list_ = [df[<span class="string">&#x27;price_2&#x27;</span>].loc[i]]</span><br><span class="line">        df[<span class="string">&#x27;price_1&#x27;</span>].loc[i] = price_list_</span><br></pre></td></tr></table></figure>
+
+<p>然后对比运行速度：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Timer unit: 1e-06 s</span><br><span class="line"></span><br><span class="line">Total time: 113.922 s</span><br><span class="line">File: &lt;ipython-input-6-d31e4af0eef1&gt;</span><br><span class="line">Function: method_1 at line 1</span><br><span class="line"></span><br><span class="line">Line <span class="comment">#      Hits         Time  Per Hit   % Time  Line Contents</span></span><br><span class="line">==============================================================</span><br><span class="line">     1                                           def method_1(<span class="built_in">df</span>):</span><br><span class="line">     2         1          5.0      5.0      0.0      remove_list = [999, 9999, 99999, 999999, 9999999, 99999999]</span><br><span class="line">     3    100001     194521.0      1.9      0.2      <span class="keyword">for</span> i <span class="keyword">in</span> df.index:</span><br><span class="line">     4    100000    5914280.0     59.1      5.2          price_list = <span class="built_in">df</span>[<span class="string">&#x27;price_1&#x27;</span>].loc[i]</span><br><span class="line">     5    100000     353655.0      3.5      0.3          price_list_ = [x <span class="keyword">for</span> x <span class="keyword">in</span> price_list <span class="keyword">if</span> x not <span class="keyword">in</span> remove_list]</span><br><span class="line">     6    100000      50260.0      0.5      0.0          <span class="keyword">if</span> not price_list_:</span><br><span class="line">     7                                                       price_list_ = [<span class="built_in">df</span>[<span class="string">&#x27;price_2&#x27;</span>].loc[i]]</span><br><span class="line">     8    100000  107408811.0   1074.1     94.3          <span class="built_in">df</span>[<span class="string">&#x27;price_1&#x27;</span>].loc[i] = price_list_</span><br></pre></td></tr></table></figure>
+
+<p>总时间粗看是上升了，但实际上是因为最后<code>loc</code>处理部分的一些波动。 如果只看修改的部分（当前的第5行对比原始代码的第4-7行），<u><strong>数据处理速度实际上是得到了提升</strong></u>。</p>
+<p>虽然这些小改动对于整体的处理速度影响不大，但是我认为好的编程习惯和简洁的编程思维是一切的基础，所以我把这部分放在最前面。</p>
+<br/>
+
+<h2 id="3-使用-iterrows-x2F-itertuples-是否有帮助？"><a href="#3-使用-iterrows-x2F-itertuples-是否有帮助？" class="headerlink" title="3. 使用 iterrows &#x2F; itertuples 是否有帮助？"></a>3. 使用 iterrows &#x2F; itertuples 是否有帮助？</h2><h3 id="iterrows"><a href="#iterrows" class="headerlink" title="iterrows"></a>iterrows</h3><p>在进行<code>Pandas.DataFrame</code>逐行循环时，还有一个常见的提升性能的做法是使用<code>iterrows</code>。原因是<code>iterrows</code>针对循环进行了一些优化（<code>iterrows</code>为每一行返回一个<code>Series</code>，它以索引对的形式遍历<code>DataFrame</code>，再以<code>Series</code>的形式遍历相关列），这里我们也试一下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">method_2</span>(<span class="params">df</span>):</span><br><span class="line">    remove_list = [<span class="number">999</span>, <span class="number">9999</span>, <span class="number">99999</span>, <span class="number">999999</span>, <span class="number">9999999</span>, <span class="number">99999999</span>]</span><br><span class="line">    <span class="keyword">for</span> i, row <span class="keyword">in</span> df.iterrows():</span><br><span class="line">        price_list = row[<span class="string">&#x27;price_1&#x27;</span>]</span><br><span class="line">        price_list_ = [x <span class="keyword">for</span> x <span class="keyword">in</span> price_list <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> remove_list]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> price_list_:</span><br><span class="line">            price_list_ = [row[<span class="string">&#x27;price_2&#x27;</span>]]</span><br><span class="line">        df[<span class="string">&#x27;price_1&#x27;</span>].loc[i] = price_list_</span><br></pre></td></tr></table></figure>
+
+<p>新的运行速度：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Timer unit: 1e-06 s</span><br><span class="line"></span><br><span class="line">Total time: 136.877 s</span><br><span class="line">File: &lt;ipython-input-6-fe966249eec5&gt;</span><br><span class="line">Function: method_2 at line 1</span><br><span class="line"></span><br><span class="line">Line <span class="comment">#      Hits         Time  Per Hit   % Time  Line Contents</span></span><br><span class="line">==============================================================</span><br><span class="line">     1                                           def method_2(<span class="built_in">df</span>):</span><br><span class="line">     2         1          5.0      5.0      0.0      remove_list = [999, 9999, 99999, 999999, 9999999, 99999999]</span><br><span class="line">     3    100001   20044080.0    200.4     14.6      <span class="keyword">for</span> i, row <span class="keyword">in</span> df.iterrows():</span><br><span class="line">     4    100000    1805185.0     18.1      1.3          price_list = row[<span class="string">&#x27;price_1&#x27;</span>]</span><br><span class="line">     5    100000     376541.0      3.8      0.3          price_list_ = [x <span class="keyword">for</span> x <span class="keyword">in</span> price_list <span class="keyword">if</span> x not <span class="keyword">in</span> remove_list]</span><br><span class="line">     6    100000      49942.0      0.5      0.0          <span class="keyword">if</span> not price_list_:</span><br><span class="line">     7                                                       price_list_ = [row[<span class="string">&#x27;price_2&#x27;</span>]]</span><br><span class="line">     8    100000  114601379.0   1146.0     83.7          <span class="built_in">df</span>[<span class="string">&#x27;price_1&#x27;</span>].loc[i] = price_list_</span><br></pre></td></tr></table></figure>
+
+<p>没错，运行效率反而下降了！但如果你仔细观察，你会发现：</p>
+<ul>
+<li>虽然，<code>for i, row in df.iterrows()</code> 这一步比原本的 <code>for i in df.index</code> 更耗费时间</li>
+<li>但是，<code>row[&#39;price_1&#39;]</code> 消耗的时间只有原本 <code>df[&#39;price_1&#39;].loc[i]</code> 的三分之一左右</li>
+<li>所以，如果在同一行中需要取很多个值，也就是当<code>loc</code>需要用到多次，<code>iterrows</code>是可以提高效率的，只是在这个场景并不适用。</li>
+</ul>
+<p>但就我个人而言，我倾向于为了代码的可维护性选择使用<code>iterrows</code>。如果未来这个处理方式有任何更改（这在实际工作中常常发生），需要通过更多列来进行计算或者筛选，使用<code>iterrows</code>的情况下，增加更多的<code>loc</code>也不会对速度带来非常大的影响。</p>
+<h3 id="itertuples"><a href="#itertuples" class="headerlink" title="itertuples"></a>itertuples</h3><p>和<code>iterrows</code>相似的做法还有<code>itertuples</code>，我们也来试试看：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">method_3</span>(<span class="params">df</span>):</span><br><span class="line">    remove_list = [<span class="number">999</span>, <span class="number">9999</span>, <span class="number">99999</span>, <span class="number">999999</span>, <span class="number">9999999</span>, <span class="number">99999999</span>]</span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> df.itertuples():</span><br><span class="line">        price_list = row[<span class="number">10</span>]</span><br><span class="line">        price_list_ = [x <span class="keyword">for</span> x <span class="keyword">in</span> price_list <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> remove_list]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> price_list_:</span><br><span class="line">            price_list_ = [row[<span class="number">11</span>]]</span><br><span class="line">        df[<span class="string">&#x27;price_1&#x27;</span>].loc[row[<span class="number">0</span>]] = price_list_</span><br></pre></td></tr></table></figure>
+
+<p>这一次的运行速度：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Timer unit: 1e-06 s</span><br><span class="line"></span><br><span class="line">Total time: 119.508 s</span><br><span class="line">File: &lt;ipython-input-7-a4704a52d255&gt;</span><br><span class="line">Function: method_3 at line 1</span><br><span class="line"></span><br><span class="line">Line <span class="comment">#      Hits         Time  Per Hit   % Time  Line Contents</span></span><br><span class="line">==============================================================</span><br><span class="line">     1                                           def method_3(<span class="built_in">df</span>):</span><br><span class="line">     2         1          4.0      4.0      0.0      remove_list = [999, 9999, 99999, 999999, 9999999, 99999999]</span><br><span class="line">     3    100001    1000295.0     10.0      0.8      <span class="keyword">for</span> row <span class="keyword">in</span> df.itertuples():</span><br><span class="line">     4    100000      69624.0      0.7      0.1          price_list = row[10]</span><br><span class="line">     5    100000     368825.0      3.7      0.3          price_list_ = [x <span class="keyword">for</span> x <span class="keyword">in</span> price_list <span class="keyword">if</span> x not <span class="keyword">in</span> remove_list]</span><br><span class="line">     6    100000      46745.0      0.5      0.0          <span class="keyword">if</span> not price_list_:</span><br><span class="line">     7                                                       price_list_ = [row[11]]</span><br><span class="line">     8    100000  118022133.0   1180.2     98.8          <span class="built_in">df</span>[<span class="string">&#x27;price_1&#x27;</span>].loc[row[0]] = price_list_</span><br></pre></td></tr></table></figure>
+
+<p>在处理循环上，<code>itertuples</code>比<code>iterrows</code>更快。而且，即使<code>loc</code>只用一次，<code>itertuples</code>也是更高效的方法。</p>
+<p>但同时，因为<code>tuple</code>的取值只能用<code>index</code>而不能用<code>column name</code>，在日常工作中出错的概率会相对高，就我个人而言，可能不太会因为这一点的效率提升使用 <code>itertuples</code>。</p>
+<br/>
+
+<h2 id="4-使用-list-整列赋值，而不使用-loc"><a href="#4-使用-list-整列赋值，而不使用-loc" class="headerlink" title="4. 使用 list 整列赋值，而不使用 loc"></a>4. 使用 list 整列赋值，而不使用 loc</h2><p>现在，我们终于要来解决最后一行 <code>loc</code> 赋值太慢的问题了！我们先用一个简单的方式来解决： </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">method_4</span>(<span class="params">df</span>):</span><br><span class="line">    remove_list = [<span class="number">999</span>, <span class="number">9999</span>, <span class="number">99999</span>, <span class="number">999999</span>, <span class="number">9999999</span>, <span class="number">99999999</span>]</span><br><span class="line">    temp = []</span><br><span class="line">    <span class="keyword">for</span> i, row <span class="keyword">in</span> df.iterrows():</span><br><span class="line">        price_list = row[<span class="string">&#x27;price_1&#x27;</span>]</span><br><span class="line">        price_list_ = [x <span class="keyword">for</span> x <span class="keyword">in</span> price_list <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> remove_list]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> price_list_:</span><br><span class="line">            price_list_ = [row[<span class="string">&#x27;price_2&#x27;</span>]]</span><br><span class="line">        temp.append(price_list_)</span><br><span class="line">    df[<span class="string">&#x27;price_1&#x27;</span>] = temp</span><br></pre></td></tr></table></figure>
+
+<p>然后对比运行速度：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Timer unit: 1e-06 s</span><br><span class="line"></span><br><span class="line">Total time: 19.9491 s</span><br><span class="line">File: &lt;ipython-input-6-43926ad4dcc0&gt;</span><br><span class="line">Function: method_4 at line 1</span><br><span class="line"></span><br><span class="line">Line <span class="comment">#      Hits         Time  Per Hit   % Time  Line Contents</span></span><br><span class="line">==============================================================</span><br><span class="line">     1                                           def method_4(<span class="built_in">df</span>):</span><br><span class="line">     2         1          4.0      4.0      0.0      remove_list = [999, 9999, 99999, 999999, 9999999, 99999999]</span><br><span class="line">     3         1          2.0      2.0      0.0      temp = []</span><br><span class="line">     4    100001   17929375.0    179.3     89.9      <span class="keyword">for</span> i, row <span class="keyword">in</span> df.iterrows():</span><br><span class="line">     5    100000    1576072.0     15.8      7.9          price_list = row[<span class="string">&#x27;price_1&#x27;</span>]</span><br><span class="line">     6    100000     293081.0      2.9      1.5          price_list_ = [x <span class="keyword">for</span> x <span class="keyword">in</span> price_list <span class="keyword">if</span> x not <span class="keyword">in</span> remove_list]</span><br><span class="line">     7    100000      48867.0      0.5      0.2          <span class="keyword">if</span> not price_list_:</span><br><span class="line">     8                                                       price_list_ = [row[<span class="string">&#x27;price_2&#x27;</span>]]</span><br><span class="line">     9    100000      70884.0      0.7      0.4          temp.append(price_list_)</span><br><span class="line">    10         1      30843.0  30843.0      0.2      <span class="built_in">df</span>[<span class="string">&#x27;price_1&#x27;</span>] = temp</span><br></pre></td></tr></table></figure>
+
+<p>很显然，解决了<code>loc</code>的问题，整体代码速度有了质的提升！<u><strong>整体处理时间已经变成了最初代码的六分之一。</strong></u></p>
+<br/>
+
+<h2 id="5-apply-也许是最适合-pandas-DataFrame-的方法"><a href="#5-apply-也许是最适合-pandas-DataFrame-的方法" class="headerlink" title="5. apply: 也许是最适合 pandas.DataFrame 的方法"></a>5. apply: 也许是最适合 pandas.DataFrame 的方法</h2><p>直接上代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">method_5</span>(<span class="params">df</span>):</span><br><span class="line">    remove_list = [<span class="number">999</span>, <span class="number">9999</span>, <span class="number">99999</span>, <span class="number">999999</span>, <span class="number">9999999</span>, <span class="number">99999999</span>]</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">deal_with_it</span>(<span class="params">price_1, price_2</span>):</span><br><span class="line">        price_list_ = [x <span class="keyword">for</span> x <span class="keyword">in</span> price_1 <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> remove_list]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> price_list_:</span><br><span class="line">            <span class="keyword">return</span> [price_2]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> price_list_</span><br><span class="line"></span><br><span class="line">    df[<span class="string">&#x27;price_1&#x27;</span>] = df.apply(<span class="keyword">lambda</span> row: deal_with_it(row[<span class="string">&#x27;price_1&#x27;</span>], row[<span class="string">&#x27;price_2&#x27;</span>]), axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>运行速度：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Timer unit: 1e-06 s</span><br><span class="line"></span><br><span class="line">Total time: 2.93459 s</span><br><span class="line">File: &lt;ipython-input-7-bac034d57215&gt;</span><br><span class="line">Function: method_5 at line 1</span><br><span class="line"></span><br><span class="line">Line <span class="comment">#      Hits         Time  Per Hit   % Time  Line Contents</span></span><br><span class="line">==============================================================</span><br><span class="line">     1                                           def method_5(<span class="built_in">df</span>):</span><br><span class="line">     2         1          2.0      2.0      0.0      remove_list = [999, 9999, 99999, 999999, 9999999, 99999999]</span><br><span class="line">     3         1          2.0      2.0      0.0      def deal_with_it(price_1, price_2):</span><br><span class="line">     4                                                   price_list_ = [x <span class="keyword">for</span> x <span class="keyword">in</span> price_1 <span class="keyword">if</span> x not <span class="keyword">in</span> remove_list]</span><br><span class="line">     5                                                   <span class="keyword">if</span> not price_list_:</span><br><span class="line">     6                                                       <span class="built_in">return</span> [price_2]</span><br><span class="line">     7                                                   <span class="keyword">else</span>:</span><br><span class="line">     8                                                       <span class="built_in">return</span> price_list_</span><br><span class="line">     9                                           </span><br><span class="line">    10         2    2934591.0 1467295.5    100.0      <span class="built_in">df</span>[<span class="string">&#x27;price_1&#x27;</span>] = df.apply(</span><br><span class="line">    11         1          0.0      0.0      0.0          lambda row: deal_with_it(row[<span class="string">&#x27;price_1&#x27;</span>], row[<span class="string">&#x27;price_2&#x27;</span>]), axis=1)</span><br></pre></td></tr></table></figure>
+
+<p>对比最原始的代码，<u><strong>速度提升了60倍！</strong></u></p>
+<br/>
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><ul>
+<li>如果可以直接向量化列操作，按道理是最快的，但是在这个场景下不适用。</li>
+<li>如果还是需要通过循环实现结果，那么 apply 会是一个很高效的方法。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/performance/" rel="tag"># performance</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/06/combine_pdf/" rel="prev" title="如何使用 Python 合并多个 PDF">
+      <i class="fa fa-chevron-left"></i> 如何使用 Python 合并多个 PDF
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%8E%9F%E5%A7%8B%E4%BB%A3%E7%A0%81"><span class="nav-number">1.</span> <span class="nav-text">1. 原始代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%9F%BA%E6%9C%AC%E4%BB%A3%E7%A0%81%E4%B9%A6%E5%86%99%E4%B9%A0%E6%83%AF"><span class="nav-number">2.</span> <span class="nav-text">2. 基本代码书写习惯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8-iterrows-x2F-itertuples-%E6%98%AF%E5%90%A6%E6%9C%89%E5%B8%AE%E5%8A%A9%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">3. 使用 iterrows &#x2F; itertuples 是否有帮助？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#iterrows"><span class="nav-number">3.1.</span> <span class="nav-text">iterrows</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#itertuples"><span class="nav-number">3.2.</span> <span class="nav-text">itertuples</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E4%BD%BF%E7%94%A8-list-%E6%95%B4%E5%88%97%E8%B5%8B%E5%80%BC%EF%BC%8C%E8%80%8C%E4%B8%8D%E4%BD%BF%E7%94%A8-loc"><span class="nav-number">4.</span> <span class="nav-text">4. 使用 list 整列赋值，而不使用 loc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-apply-%E4%B9%9F%E8%AE%B8%E6%98%AF%E6%9C%80%E9%80%82%E5%90%88-pandas-DataFrame-%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">5. apply: 也许是最适合 pandas.DataFrame 的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Rylee H"
+      src="/images/rs_ava.png">
+  <p class="site-author-name" itemprop="name">Rylee H</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-camera-retro"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">RyleeH</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '16px',
+  right: 'unset',
+  left: '16px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: false,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+if (window.darkmode && !window.darkmode.isActivated()) {
+  window.darkmode.toggle();
+  var toggleButtons = document.getElementsByClassName("darkmode-toggle");
+  if (toggleButtons && toggleButtons.length > 0) {
+    for (i = 0; i < toggleButtons.length; i++) {
+      toggleButtons[i].classList.add("darkmode-toggle--white");
+    }
+  }
+}
+</script>
+
+</body>
+</html>

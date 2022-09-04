@@ -1,3 +1,4 @@
+https://ryleesnow.github.io/2022/09/03/python_speed/
 https://ryleesnow.github.io/2022/08/06/combine_pdf/
 https://ryleesnow.github.io/2022/08/04/docker_beginner/
 https://ryleesnow.github.io/2022/08/01/jupyter_connect_to_server/
@@ -9,4 +10,6 @@ https://ryleesnow.github.io/tags/pdf/
 https://ryleesnow.github.io/tags/docker/
 https://ryleesnow.github.io/tags/linux/
 https://ryleesnow.github.io/tags/jupyter-notebook/
+https://ryleesnow.github.io/tags/performance/
 https://ryleesnow.github.io/categories/tools/
+https://ryleesnow.github.io/categories/python/

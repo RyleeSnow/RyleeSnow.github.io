@@ -8,13 +8,13 @@ https://ryleesnow.github.io/tags/index.html
 https://ryleesnow.github.io/categories/index.html
 https://ryleesnow.github.io/
 https://ryleesnow.github.io/tags/python/
-https://ryleesnow.github.io/tags/pdf/
 https://ryleesnow.github.io/tags/pandas/
 https://ryleesnow.github.io/tags/numpy/
+https://ryleesnow.github.io/tags/pdf/
 https://ryleesnow.github.io/tags/docker/
 https://ryleesnow.github.io/tags/linux/
-https://ryleesnow.github.io/tags/code-speed/
 https://ryleesnow.github.io/tags/jupyter-notebook/
+https://ryleesnow.github.io/tags/code-speed/
+https://ryleesnow.github.io/categories/data-analysis/
 https://ryleesnow.github.io/categories/tools/
 https://ryleesnow.github.io/categories/python/
-https://ryleesnow.github.io/categories/data-analysis/

@@ -90,13 +90,6 @@
   </url>
   
   <url>
-    <loc>https://ryleesnow.github.io/tags/pdf/</loc>
-    <lastmod>2023-07-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ryleesnow.github.io/tags/pandas/</loc>
     <lastmod>2023-07-04</lastmod>
     <changefreq>weekly</changefreq>
@@ -105,6 +98,13 @@
   
   <url>
     <loc>https://ryleesnow.github.io/tags/numpy/</loc>
+    <lastmod>2023-07-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryleesnow.github.io/tags/pdf/</loc>
     <lastmod>2023-07-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -125,20 +125,27 @@
   </url>
   
   <url>
-    <loc>https://ryleesnow.github.io/tags/code-speed/</loc>
-    <lastmod>2023-07-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ryleesnow.github.io/tags/jupyter-notebook/</loc>
     <lastmod>2023-07-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://ryleesnow.github.io/tags/code-speed/</loc>
+    <lastmod>2023-07-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
+  
+  <url>
+    <loc>https://ryleesnow.github.io/categories/data-analysis/</loc>
+    <lastmod>2023-07-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
   
   <url>
     <loc>https://ryleesnow.github.io/categories/tools/</loc>
@@ -149,13 +156,6 @@
   
   <url>
     <loc>https://ryleesnow.github.io/categories/python/</loc>
-    <lastmod>2023-07-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryleesnow.github.io/categories/data-analysis/</loc>
     <lastmod>2023-07-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

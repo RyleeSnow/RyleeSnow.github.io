@@ -21,21 +21,15 @@
     var CONFIG = {"hostname":"ryleesnow.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","width":256,"display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"fadeIn","header":"fadeIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="本文方法适用于将多个 PDF 按照一定顺序批量合并到一个 PDF 的需求。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="如何使用 Python 合并多个 PDF">
-<meta property="og:url" content="https://ryleesnow.github.io/2022/08/06/combine_pdf/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Rylee&#39;s Tech Blog">
+<meta property="og:url" content="https://ryleesnow.github.io/tags/numpy/index.html">
 <meta property="og:site_name" content="Rylee&#39;s Tech Blog">
-<meta property="og:description" content="本文方法适用于将多个 PDF 按照一定顺序批量合并到一个 PDF 的需求。">
 <meta property="og:locale">
-<meta property="article:published_time" content="2022-08-06T14:22:22.000Z">
-<meta property="article:modified_time" content="2022-08-13T09:33:48.376Z">
 <meta property="article:author" content="Rylee H">
-<meta property="article:tag" content="python">
-<meta property="article:tag" content="pdf">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://ryleesnow.github.io/2022/08/06/combine_pdf/">
+<link rel="canonical" href="https://ryleesnow.github.io/tags/numpy/">
 
 
 <script id="page-configurations">
@@ -43,12 +37,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : true,
+    isPost : false,
     lang   : 'zh-Hans'
   };
 </script>
 
-  <title>如何使用 Python 合并多个 PDF | Rylee's Tech Blog</title>
+  <title>Tag: numpy | Rylee's Tech Blog</title>
   
 
 
@@ -155,108 +149,51 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content tag">
             
 
-    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://ryleesnow.github.io/2022/08/06/combine_pdf/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/rs_ava.png">
-      <meta itemprop="name" content="Rylee H">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rylee's Tech Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          如何使用 Python 合并多个 PDF
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-08-06 22:22:22" itemprop="dateCreated datePublished" datetime="2022-08-06T22:22:22+08:00">2022-08-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tools/" itemprop="url" rel="index"><span itemprop="name">tools</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        <h2 class="collection-header">numpy
+          <small>Tag</small>
+        </h2>
+      </div>
 
       
-        <br/>
-
-<p>本文方法适用于将多个 PDF 按照一定顺序批量合并到一个 PDF 的需求。</p>
-<span id="more"></span>
-
-<br/>
-
-<h3 id="需要的-python-包"><a href="#需要的-python-包" class="headerlink" title="需要的 python 包"></a>需要的 python 包</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip install PyPDF2</span><br></pre></td></tr></table></figure>
-
-<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> PyPDF2 <span class="keyword">import</span> PdfFileMerger</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定子文件存放的地方</span></span><br><span class="line">target_path = <span class="string">&#x27;your_target_path&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 确定需要合并的 PDF，这边使用的是文件夹里的所有 PDF 文件，也可自行添加筛选条件</span></span><br><span class="line">pdf_lst = [fn <span class="keyword">for</span> fn <span class="keyword">in</span> os.listdir(target_path) <span class="keyword">if</span> fn.endswith(<span class="string">&#x27;.pdf&#x27;</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加一个排序，用于一些 PDF 名称是按照一定规则排序的（比如日期）</span></span><br><span class="line">pdf_lst.sort(key=<span class="built_in">str</span>.lower)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 利用 PdfFileMerger 进行整合</span></span><br><span class="line">file_merger = PdfFileMerger()</span><br><span class="line"><span class="keyword">for</span> fn <span class="keyword">in</span> pdf_lst:</span><br><span class="line">    file_merger.append(os.path.join(target_path, fn))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入目标文件</span></span><br><span class="line">file_merger.write(<span class="string">&quot;your_write_path/merged.pdf&quot;</span>)</span><br></pre></td></tr></table></figure>
-
+    <div class="collection-year">
+      <span class="collection-header">2021</span>
     </div>
 
-    
-    
-    
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/python/" rel="tag"># python</a>
-              <a href="/tags/pdf/" rel="tag"># pdf</a>
-          </div>
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2021-08-01T21:00:00+08:00"
+              content="2021-08-01">
+          08-01
+        </time>
+      </div>
 
-        
+      <div class="post-title">
+          <a class="post-title-link" href="/2021/08/01/Elegant-Python/" itemprop="url">
+            <span itemprop="name">让数据分析中的 Python 代码更优雅</span>
+          </a>
+      </div>
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2022/08/04/docker_beginner/" rel="prev" title="Docker 使用新手教学">
-      <i class="fa fa-chevron-left"></i> Docker 使用新手教学
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/09/03/python_speed/" rel="next" title="Python - 代码运行速度优化 - 实例">
-      Python - 代码运行速度优化 - 实例 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
+    </header>
   </article>
+
+    </div>
+  </div>
   
   
+  
+
   
 
 
@@ -309,7 +246,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E7%9A%84-python-%E5%8C%85"><span class="nav-number">1.</span> <span class="nav-text">需要的 python 包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">使用方法</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
